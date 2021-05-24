@@ -8,6 +8,14 @@ Requirements
 In order to build st you need the Xlib header files.
 
 
+Patches Installed
+-----------------
+- [boxdraw](https://st.suckless.org/patches/boxdraw/)
+- [vertcenter](https://st.suckless.org/patches/vertcenter/)
+- [copyurl](https://st.suckless.org/patches/copyurl/)
+- [open copied url](https://st.suckless.org/patches/open_copied_url/)
+
+
 Installation
 ------------
 Edit `config.mk` to match your local setup (st is installed into
