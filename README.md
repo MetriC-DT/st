@@ -16,6 +16,7 @@ Patches Installed
 - [open copied url](https://st.suckless.org/patches/open_copied_url/)
 - [undercurl](https://st.suckless.org/patches/undercurl/)
 - [font2](https://st.suckless.org/patches/font2/)
+- [selectioncolors](https://st.suckless.org/patches/selectioncolors/)
 
 Installation
 ------------
