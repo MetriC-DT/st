@@ -14,7 +14,7 @@ Patches Installed
 - [vertcenter](https://st.suckless.org/patches/vertcenter/)
 - [copyurl](https://st.suckless.org/patches/copyurl/)
 - [open copied url](https://st.suckless.org/patches/open_copied_url/)
-
+- [undercurl](https://st.suckless.org/patches/undercurl/)
 
 Installation
 ------------
