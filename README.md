@@ -15,6 +15,7 @@ Patches Installed
 - [copyurl](https://st.suckless.org/patches/copyurl/)
 - [open copied url](https://st.suckless.org/patches/open_copied_url/)
 - [undercurl](https://st.suckless.org/patches/undercurl/)
+- [font2](https://st.suckless.org/patches/font2/)
 
 Installation
 ------------
