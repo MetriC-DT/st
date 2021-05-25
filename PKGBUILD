@@ -6,8 +6,8 @@ arch=('any')
 license=('MIT')
 depends=(libxft)
 url=https://github.com/MetriC-DT/st
-source=('https://github.com/MetriC-DT/st/archive/refs/tags/v0.8.4b.tar.gz')
-md5sums=(22f2108bc5f0fd7510c6cb6abb455694)
+source=('https://github.com/MetriC-DT/st/archive/refs/tags/v0.8.4c.tar.gz')
+md5sums=(de6e016e2cd5c1847dce8d71730cca1e)
 _sourcedir=$pkgname-$pkgver
 _makeopts="--directory=$_sourcedir"
 
