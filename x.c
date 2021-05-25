@@ -83,7 +83,6 @@ typedef struct {
 	int w, h; /* window width and height */
 	int ch; /* char height */
 	int cw; /* char width  */
-	int cyo; /* char y offset */
 	int mode; /* window state/mode flags */
 	int cursor; /* cursor style */
 } TermWindow;
@@ -1001,7 +1000,6 @@ xloadfonts(char *fontstr, double fontsize)
 	/* Setting character width and height. */
 	win.cw = ceilf(dc.font.width * cwscale);
 	win.ch = ceilf(dc.font.height * chscale);
-	win.cyo = ceilf(dc.font.height * (chscale - 1) / 2);
 
 	FcPatternDel(pattern, FC_SLANT);
 	FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ITALIC);
@@ -1227,7 +1225,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
 	FcCharSet *fccharset;
 	int i, f, numspecs = 0;
 
-	for (i = 0, xp = winx, yp = winy + font->ascent + win.cyo; i < len; ++i) {
+	for (i = 0, xp = winx, yp = winy + font->ascent; i < len; ++i) {
 		/* Fetch rune and mode for current glyph. */
 		rune = glyphs[i].u;
 		mode = glyphs[i].mode;
@@ -1252,7 +1250,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
 				font = &dc.bfont;
 				frcflags = FRC_BOLD;
 			}
-			yp = winy + font->ascent + win.cyo;
+			yp = winy + font->ascent;
 		}
 
 		if (mode & ATTR_BOXDRAW) {
@@ -1434,6 +1432,12 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
 		bg = temp;
 	}
 
+	if (base.mode & ATTR_SELECTED) {
+		bg = &dc.col[selectionbg];
+		if (!ignoreselfg)
+			fg = &dc.col[selectionfg];
+	}
+
 	if (base.mode & ATTR_BLINK && win.mode & MODE_BLINK)
 		fg = bg;
 
@@ -1474,101 +1478,12 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
 
 	/* Render underline and strikethrough. */
 	if (base.mode & ATTR_UNDERLINE) {
-		XftDrawRect(xw.draw, fg, winx, winy + win.cyo + dc.font.ascent + 1,
+		XftDrawRect(xw.draw, fg, winx, winy + dc.font.ascent + 1,
 				width, 1);
-		// Underline Color
-		int wlw = 1; // Wave Line Width
-		int linecolor;
-		if ((base.ucolor[0] >= 0) &&
-			!(base.mode & ATTR_BLINK && win.mode & MODE_BLINK) &&
-			!(base.mode & ATTR_INVISIBLE)
-		) {
-			// Special color for underline
-			// Index
-			if (base.ucolor[1] < 0) {
-				linecolor = dc.col[base.ucolor[0]].pixel;
-			}
-			// RGB
-			else {
-				XColor lcolor;
-				lcolor.red = base.ucolor[0] * 257;
-				lcolor.green = base.ucolor[1] * 257;
-				lcolor.blue = base.ucolor[2] * 257;
-				lcolor.flags = DoRed | DoGreen | DoBlue;
-				XAllocColor(xw.dpy, xw.cmap, &lcolor);
-				linecolor = lcolor.pixel;
-			}
-		} else {
-			// Foreground color for underline
-			linecolor = fg->pixel;
-		}
-
-		XGCValues ugcv = {
-			.foreground = linecolor,
-			.line_width = wlw,
-			.line_style = LineSolid,
-			.cap_style = CapNotLast
-		};
-
-		GC ugc = XCreateGC(xw.dpy, XftDrawDrawable(xw.draw),
-			GCForeground | GCLineWidth | GCLineStyle | GCCapStyle,
-			&ugcv);
-
-		// Underline Style
-		if (base.ustyle != 3) {
-			//XftDrawRect(xw.draw, fg, winx, winy + dc.font.ascent + 1, width, 1);
-			XFillRectangle(xw.dpy, XftDrawDrawable(xw.draw), ugc, winx,
-				winy + dc.font.ascent + 1, width, wlw);
-		} else if (base.ustyle == 3) {
-			int ww = win.cw;//width;
-			int wh = dc.font.descent - wlw/2 - 1;//r.height/7;
-			int wx = winx;
-			int wy = winy + win.ch - dc.font.descent;
-
-			// Draw waves
-			int narcs = charlen * 2 + 1;
-			XArc *arcs = xmalloc(sizeof(XArc) * narcs);
-
-			int i = 0;
-			for (i = 0; i < charlen-1; i++) {
-				arcs[i*2] = (XArc) {
-					.x = wx + win.cw * i + ww / 4,
-					.y = wy,
-					.width = win.cw / 2,
-					.height = wh,
-					.angle1 = 0,
-					.angle2 = 180 * 64
-				};
-				arcs[i*2+1] = (XArc) {
-					.x = wx + win.cw * i + ww * 0.75,
-					.y = wy,
-					.width = win.cw/2,
-					.height = wh,
-					.angle1 = 180 * 64,
-					.angle2 = 180 * 64
-				};
-			}
-			// Last wave
-			arcs[i*2] = (XArc) {wx + ww * i + ww / 4, wy, ww / 2, wh,
-			0, 180 * 64 };
-			// Last wave tail
-			arcs[i*2+1] = (XArc) {wx + ww * i + ww * 0.75, wy, ceil(ww / 2.),
-			wh, 180 * 64, 90 * 64};
-			// First wave tail
-			i++;
-			arcs[i*2] = (XArc) {wx - ww/4 - 1, wy, ceil(ww / 2.), wh, 270 * 64,
-			90 * 64 };
-
-			XDrawArcs(xw.dpy, XftDrawDrawable(xw.draw), ugc, arcs, narcs);
-
-			free(arcs);
-		}
-
-		XFreeGC(xw.dpy, ugc);
 	}
 
 	if (base.mode & ATTR_STRUCK) {
-		XftDrawRect(xw.draw, fg, winx, winy + win.cyo + 2 * dc.font.ascent / 3,
+		XftDrawRect(xw.draw, fg, winx, winy + 2 * dc.font.ascent / 3,
 				width, 1);
 	}
 
@@ -1593,7 +1508,7 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 
 	/* remove the old cursor */
 	if (selected(ox, oy))
-		og.mode ^= ATTR_REVERSE;
+                og.mode ^= ATTR_SELECTED;
 	xdrawglyph(og, ox, oy);
 
 	if (IS_SET(MODE_HIDE))
@@ -1606,23 +1521,13 @@ xdrawcursor(int cx, int cy, Glyph g, int ox, int oy, Glyph og)
 
 	if (IS_SET(MODE_REVERSE)) {
 		g.mode |= ATTR_REVERSE;
+                g.fg = defaultcs;
 		g.bg = defaultfg;
-		if (selected(cx, cy)) {
-			drawcol = dc.col[defaultcs];
-			g.fg = defaultrcs;
-		} else {
-			drawcol = dc.col[defaultrcs];
-			g.fg = defaultcs;
-		}
+                drawcol = dc.col[defaultrcs];
 	} else {
-		if (selected(cx, cy)) {
-			g.fg = defaultfg;
-			g.bg = defaultrcs;
-		} else {
-			g.fg = defaultbg;
-			g.bg = defaultcs;
-		}
-		drawcol = dc.col[g.bg];
+                g.fg = defaultbg;
+                g.bg = defaultcs;
+                drawcol = dc.col[defaultcs];
 	}
 
 	/* draw the new one */
@@ -1714,7 +1619,7 @@ xdrawline(Line line, int x1, int y1, int x2)
 		if (new.mode == ATTR_WDUMMY)
 			continue;
 		if (selected(x, y1))
-			new.mode ^= ATTR_REVERSE;
+			new.mode ^= ATTR_SELECTED;
 		if (i > 0 && ATTRCMP(base, new)) {
 			xdrawglyphfontspecs(specs, base, i, ox, y1);
 			specs += i;
@@ -2153,22 +2058,18 @@ run:
 void
 opencopied(const Arg *arg)
 {
-	const size_t max_cmd = 2048;
-	const char *clip = xsel.clipboard;
+	size_t const max_cmd = 2048;
+	char * const clip = xsel.clipboard;
 	if(!clip) {
 		fprintf(stderr, "Warning: nothing copied to clipboard\n");
 		return;
 	}
 
 	/* account for space/quote (3) and \0 (1) and & (1) */
-	char cmd[max_cmd + strlen(clip) + 5];
-	strncpy(cmd, (char *)arg->v, max_cmd);
-	cmd[max_cmd] = '\0';
+	/* e.g.: xdg-open "https://st.suckless.org"& */
+	size_t const cmd_size = max_cmd + strlen(clip) + 5;
+	char cmd[cmd_size];
 
-	strcat(cmd, " \"");
-	strcat(cmd, clip);
-	strcat(cmd, "\"");
-	strcat(cmd, "&");
-
+	snprintf(cmd, cmd_size, "%s \"%s\"&", (char *)arg->v, clip);
 	system(cmd);
 }

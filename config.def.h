@@ -5,8 +5,8 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-static int borderpx = 2;
+static char *font = "Fira Code Nerd Font:pixelsize=14:antialias=true:autohint=true";
+static int borderpx = 7;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -131,7 +131,7 @@ static const char *colorname[] = {
 
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#cccccc",
-	"#555555",
+	"#2e3440",
 };
 
 
@@ -142,7 +142,14 @@ static const char *colorname[] = {
 unsigned int defaultfg = 7;
 unsigned int defaultbg = 0;
 static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+static unsigned int defaultrcs = 256;
+
+/* Colors used for selection */
+unsigned int selectionbg = 257;
+unsigned int selectionfg = 7;
+/* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
+/* Else if 1 keep original foreground-color of each cell => more colors :) */
+static int ignoreselfg = 1;
 
 /*
  * Default shape of cursor
