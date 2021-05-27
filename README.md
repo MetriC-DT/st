@@ -7,6 +7,8 @@ Requirements
 ------------
 In order to build st you need the Xlib header files.
 
+For emoji and special character support, use `libxft-bgra` instead of the default `libxft`.
+
 
 Patches Installed
 -----------------
