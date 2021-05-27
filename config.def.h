@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Fira Code Nerd Font:pixelsize=14:antialias=true:autohint=true";
+static char *font = "Fira Code Nerd Font:pixelsize=16:antialias=true:autohint=true";
 static int borderpx = 7;
 
 /*
@@ -108,45 +108,52 @@ unsigned int tabspaces = 8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
+	"#dff4ff",
+	"#ff8671",
+	"#14a57c",
+	"#499ec8",
+	"#59b6ea",
+	"#ee22bc",
+	"#8f5eba",
+	"#4a545b",
 
 	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
+	"#97a5ab",
+	"#ff8671",
+	"#14a57c",
+	"#499ec8",
+	"#59b6ea",
+	"#ee22bc",
+	"#8f5eba",
+	"#4a545b",
 
 	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#2e3440",
-};
+    /* cursor, reversecursor */
+	"#77818c",
+	"#fefefe",
 
+    /* foreground, background. */
+    "#2b4f76",
+    "#f8fafa",
+
+    /* selectionbg */
+    "#d5dfe2"
+};
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
+unsigned int defaultfg = 258;
+unsigned int defaultbg = 259;
 static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 256;
+static unsigned int defaultrcs = 257;
 
 /* Colors used for selection */
-unsigned int selectionbg = 257;
-unsigned int selectionfg = 7;
+unsigned int selectionbg = 260;
+unsigned int selectionfg = 0;
 /* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
 /* Else if 1 keep original foreground-color of each cell => more colors :) */
 static int ignoreselfg = 1;
@@ -218,8 +225,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY,               XK_l,           copyurl,        {.i =  0} },
-	{ MODKEY,               XK_o,           opencopied,     {.v = "xdg-open"} },
+	{ ControlMask,          XK_y,           copyurl,        {.i =  0} },
+	{ ControlMask,          XK_o,           opencopied,     {.v = "firefox"} },
 };
 
 /*
