@@ -7,7 +7,7 @@ Requirements
 ------------
 In order to build st you need the Xlib header files.
 
-For emoji and special character support, use `libxft-bgra` instead of the default `libxft`.
+For emoji and special character support, compile with `libxft-bgra` instead of the default `libxft`.
 
 
 Patches Installed
@@ -17,6 +17,7 @@ Patches Installed
 - [open copied url](https://st.suckless.org/patches/open_copied_url/)
 - [undercurl](https://st.suckless.org/patches/undercurl/)
 - [selectioncolors](https://st.suckless.org/patches/selectioncolors/)
+- [font2](https://st.suckless.org/patches/font2/)
 
 Installation
 ------------
