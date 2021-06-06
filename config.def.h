@@ -5,12 +5,12 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Fira Code:pixelsize=16:antialias=true:autohint=true";
+static char *font = "FiraCode Nerd Font Mono:pixelsize=16:antialias=true:autohint=true";
 
 /* Spare fonts */
 static char *font2[] = {
     "DejaVu Sans Mono:pixelsize=16:antialias=true:autohint=true",
-    "Fira Code Nerd Font Mono:pixelsize=16:antialias=true:autohint=true"
+    "FiraCode Nerd Font:pixelsize=16:antialias=true:autohint=true"
 };
 
 static int borderpx = 7;
@@ -232,8 +232,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ControlMask,          XK_y,           copyurl,        {.i =  0} },
-	{ ControlMask,          XK_p,           opencopied,     {.v = "firefox"} },
+	{ TERMMOD,              XK_O,           copyurl,        {.i =  0} },
+	{ TERMMOD,              XK_P,           opencopied,     {.v = "firefox"} },
 };
 
 /*
