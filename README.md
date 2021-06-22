@@ -18,6 +18,7 @@ Patches Installed
 - [undercurl](https://st.suckless.org/patches/undercurl/)
 - [selectioncolors](https://st.suckless.org/patches/selectioncolors/)
 - [font2](https://st.suckless.org/patches/font2/)
+- [anysize](https://st.suckless.org/patches/anysize/)
 
 Installation
 ------------
