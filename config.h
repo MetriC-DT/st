@@ -113,6 +113,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
+/* https://mayccoll.github.io/Gogh/ */
 static const char *colorname[] = {
 	/* 8 normal colors */
 	"#202124",
@@ -120,7 +121,7 @@ static const char *colorname[] = {
 	"#34a853",
 	"#f79c06",
 	"#4285f4",
-	"#a142f4",
+	"#e94691",
 	"#24c1e0",
 	"#e8eaed",
 
@@ -130,7 +131,7 @@ static const char *colorname[] = {
 	"#34a853",
 	"#f79c06",
 	"#4285f4",
-	"#a142f4",
+	"#e94691",
 	"#24c1e0",
 	"#e8eaed",
 
