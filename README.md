@@ -13,8 +13,6 @@ For emoji and special character support, compile with `libxft-bgra` instead of t
 Patches Installed
 -----------------
 - [boxdraw](https://st.suckless.org/patches/boxdraw/)
-- [copyurl](https://st.suckless.org/patches/copyurl/)
-- [open copied url](https://st.suckless.org/patches/open_copied_url/)
 - [undercurl](https://st.suckless.org/patches/undercurl/)
 - [selectioncolors](https://st.suckless.org/patches/selectioncolors/)
 - [font2](https://st.suckless.org/patches/font2/)

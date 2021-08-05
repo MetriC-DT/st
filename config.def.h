@@ -13,7 +13,7 @@ static char *font2[] = {
     "FiraCode Nerd Font:pixelsize=16:antialias=true:autohint=true"
 };
 
-static int borderpx = 7;
+static int borderpx = 2;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -113,26 +113,27 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
+/* https://mayccoll.github.io/Gogh/ */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#dff4ff",
-	"#ff8671",
-	"#14a57c",
-	"#499ec8",
-	"#59b6ea",
-	"#ee22bc",
-	"#8f5eba",
-	"#4a545b",
+	"#202124",
+	"#ea4335",
+	"#34a853",
+	"#f79c06",
+	"#4285f4",
+	"#a142f4",
+	"#24c1e0",
+	"#e8eaed",
 
 	/* 8 bright colors */
-	"#97a5ab",
-	"#ff8671",
-	"#14a57c",
-	"#499ec8",
-	"#59b6ea",
-	"#ee22bc",
-	"#8f5eba",
-	"#4a545b",
+	"#a1a6ad",
+	"#ea4335",
+	"#34a853",
+	"#f79c06",
+	"#4285f4",
+	"#a142f4",
+	"#24c1e0",
+	"#e8eaed",
 
 	[255] = 0,
 
@@ -232,8 +233,6 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ TERMMOD,              XK_O,           copyurl,        {.i =  0} },
-	{ TERMMOD,              XK_P,           opencopied,     {.v = "firefox"} },
 };
 
 /*
